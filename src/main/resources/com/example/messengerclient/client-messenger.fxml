@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.messengerclient.ClientUIController">
+   <children>
+      <HBox fx:id="top_bar" alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="320.0" style="-fx-background-color: #202A44;">
+         <children>
+            <FontAwesomeIcon glyphName="USER" size="16">
+               <HBox.margin>
+                  <Insets left="5.0" />
+               </HBox.margin>
+            </FontAwesomeIcon>
+            <Text fx:id="header_text" strokeType="OUTSIDE" strokeWidth="0.0" text="Messenger:" wrappingWidth="135.91149139404297">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="System Bold Italic" size="14.0" />
+               </font>
+            </Text>
+            <FontAwesomeIcon glyphName="MINUS" onMouseClicked="#minimizeApp" size="18">
+               <HBox.margin>
+                  <Insets left="90.0" right="5.0" top="2.0" />
+               </HBox.margin>
+            </FontAwesomeIcon>
+            <FontAwesomeIcon glyphName="CIRCLE" onMouseClicked="#maximizeApp" size="16">
+               <HBox.margin>
+                  <Insets left="4.0" />
+               </HBox.margin>
+            </FontAwesomeIcon>
+            <FontAwesomeIcon glyphName="CLOSE" onMouseClicked="#closeApp" size="18" HBox.hgrow="NEVER">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+            </FontAwesomeIcon>
+         </children>
+      </HBox>
+      <SplitPane dividerPositions="0.8691275167785234" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="300.0" prefWidth="320.0" style="-fx-background-color: #333333;">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="342.0" prefWidth="535.0">
+               <children>
+                  <ScrollPane fx:id="sp_main" prefHeight="255.0" prefWidth="317.0">
+                     <content>
+                        <VBox fx:id="vbox_messages" maxWidth="305.0" prefHeight="251.0" prefWidth="300.0" />
+                     </content>
+                  </ScrollPane>
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" style="-fx-background-color: #333333;">
+               <children>
+                  <Button fx:id="send_button" layoutX="268.0" layoutY="5.0" mnemonicParsing="false" onAction="#sendButtonPressed" prefHeight="25.0" prefWidth="43.0" text="Send" />
+                  <TextField fx:id="message_field" layoutX="8.0" layoutY="5.0" onKeyPressed="#enterKeyPressed" prefHeight="25.0" prefWidth="252.0" promptText="Enter your message" />
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+   </children>
+</VBox>
