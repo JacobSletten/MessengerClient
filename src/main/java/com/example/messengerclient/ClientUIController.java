@@ -31,22 +31,11 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ClientUIController implements Initializable {
-
     private final ObservableList<String> messages = FXCollections.observableArrayList();
-
     private ClientTransceiver clientTransceiver;
-
     private ExtractionFunction getData = (s) -> messages.add(s);
+    private double x = 0, y = 0;
 
-    private Stage oldStage;
-
-    @FXML
-    private TextField username_field;
-    @FXML
-    private PasswordField password_field;
-
-    @FXML // Messenger Widgets
-    private Button send_button;
     @FXML
     private TextField message_field;
     @FXML
@@ -55,19 +44,14 @@ public class ClientUIController implements Initializable {
     private ScrollPane sp_main;
     @FXML
     private Text header_text;
-
-    private String username;
+    @FXML
+    private HBox top_bar;
 
     public void passClientTransceiver(ClientTransceiver transceiver) {
         System.out.println("Passing Transceiver");
         this.clientTransceiver = transceiver;
-        username = clientTransceiver.getClientUsername();
         clientTransceiver.receiveMessageWithHook(getData);
     }
-/*
-    public void passOldStage(Stage oldStage) {
-        this.oldStage = oldStage;
-    }*/
 
     @FXML
     public void sendButtonPressed(ActionEvent event) {
@@ -83,7 +67,6 @@ public class ClientUIController implements Initializable {
             message_field.clear();
         }
     }
-
     @FXML
     public void minimizeApp(MouseEvent event) throws IOException {
         Stage s = (Stage) ((Node)event.getSource()).getScene().getWindow();
@@ -94,20 +77,12 @@ public class ClientUIController implements Initializable {
         Stage s = (Stage) ((Node)event.getSource()).getScene().getWindow();
         s.setFullScreen(true);
     }
-
     @FXML
     public void closeApp(MouseEvent event) throws IOException {
         Stage s = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        clientTransceiver.sendTermination();
         s.close();
-        //Platform.exit();
         System.exit(0);
     }
-
-    @FXML
-    private HBox top_bar;
-
-    private double x = 0, y = 0;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -140,7 +115,8 @@ public class ClientUIController implements Initializable {
 
                         vbox_messages.heightProperty().addListener(new ChangeListener<Number>() {
                             @Override
-                            public void changed(ObservableValue<? extends Number> observableValue, Number oldValue, Number newValue) {
+                            public void changed(ObservableValue<? extends Number>
+                                                        observableValue, Number oldValue, Number newValue) {
                                 sp_main.setVvalue((Double) newValue);
                             }
                         });
@@ -148,6 +124,5 @@ public class ClientUIController implements Initializable {
                 });
             }
         });
-
     }
 }

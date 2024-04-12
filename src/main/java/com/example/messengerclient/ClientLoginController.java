@@ -23,36 +23,17 @@ public class ClientLoginController implements Initializable {
     private Stage stage;
     private Scene scene;
     private Parent root;
-
+    private double x = 0, y = 0;
     private ClientTransceiver clientTransceiver;
 
+    @FXML
+    private HBox top_bar;
     @FXML
     private TextField username_field;
     @FXML
     private PasswordField password_field;
     @FXML
     private Text error_text;
-
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
-
-    @FXML
-    public void switchToMessenger(ActionEvent event) throws IOException {
-
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("client-messenger.fxml"));
-        root = loader.load();
-
-        ClientUIController clientUiController = loader.getController();
-        clientUiController.passClientTransceiver(clientTransceiver);
-        //clientUiController.passOldStage(stage);
-
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.setTitle("Messenger");
-        stage.show();
-    }
 
     @FXML
     public void loginButtonPressed(ActionEvent event) throws IOException {
@@ -81,25 +62,6 @@ public class ClientLoginController implements Initializable {
     }
 
     @FXML
-    public void minimizeApp(MouseEvent event) throws IOException {
-        Stage s = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        s.setIconified(true);
-    }
-    @FXML
-    public void maximizeApp(MouseEvent event) throws IOException {
-        Stage s = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        s.setFullScreen(true);
-    }
-
-    @FXML
-    public void closeApp(MouseEvent event) throws IOException {
-        Stage s = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        clientTransceiver.shutdownClient();
-        s.close();
-    }
-
-
-    @FXML
     public void createAccountButtonPressed(ActionEvent event) throws IOException {
         String username = username_field.getText();
         String password = password_field.getText();
@@ -125,18 +87,28 @@ public class ClientLoginController implements Initializable {
             displayInvalidAlert(status);
         }
     }
+    @FXML
+    public void minimizeApp(MouseEvent event) throws IOException {
+        Stage s = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        s.setIconified(true);
+    }
+    @FXML
+    public void maximizeApp(MouseEvent event) throws IOException {
+        Stage s = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        s.setFullScreen(true);
+    }
+    @FXML
+    public void closeApp(MouseEvent event) throws IOException {
+        Stage s = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        clientTransceiver.shutdownClient();
+        s.close();
+    }
 
     private void displayInvalidAlert(String status) {
         System.out.println("Status is Invalid");
         error_text.setText(status);
         password_field.clear();
     }
-
-
-    @FXML
-    private HBox top_bar;
-
-    private double x = 0, y = 0;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

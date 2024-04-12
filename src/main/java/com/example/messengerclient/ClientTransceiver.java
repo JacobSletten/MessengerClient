@@ -1,10 +1,7 @@
 package com.example.messengerclient;
 
-import com.example.messengerclient.ExtractionFunction;
-
 import java.io.*;
 import java.net.Socket;
-import java.util.Scanner;
 
 /**
  * ClientTransceiver handles all Client Side Networking Elements
@@ -14,7 +11,6 @@ public class ClientTransceiver {
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
     private String clientUsername;
-    private Boolean status = false;
 
     /**
      * Initializes the client socket and
@@ -22,6 +18,7 @@ public class ClientTransceiver {
      *
      * @param socket the client's socket
      */
+
     public ClientTransceiver(Socket socket) {
         try {
             this.clientSocket = socket;
@@ -32,14 +29,8 @@ public class ClientTransceiver {
         }
     }
 
-    public boolean getStatus() {
-        return status;
-    }
     public String getClientUsername() {
         return clientUsername;
-    }
-    public void setClientUsername(String username) {
-        clientUsername = username;
     }
 
     public void shutdownClient(){
@@ -53,16 +44,6 @@ public class ClientTransceiver {
             if (bufferedWriter != null) {
                 bufferedWriter.close();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void sendTermination(){
-        try {
-            bufferedWriter.write("Close");
-            bufferedWriter.newLine();
-            bufferedWriter.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -98,25 +79,6 @@ public class ClientTransceiver {
         return msgFromSvr;
     }
 
-    public void sendMessageContinuous(){
-        try {
-            bufferedWriter.write(clientUsername);
-            bufferedWriter.newLine();
-            bufferedWriter.flush();
-
-            Scanner scan = new Scanner(System.in);
-            while (clientSocket.isConnected()) {
-                String message = scan.nextLine();
-                bufferedWriter.write(clientUsername+ ": " + message);
-                bufferedWriter.newLine();
-                bufferedWriter.flush();
-            }
-        } catch (IOException e) {
-            shutdownClient();
-        }
-
-    }
-
     public void receiveMessageWithHook(ExtractionFunction func) {
         new Thread(() -> {
             String msgFromSvr;
@@ -128,20 +90,6 @@ public class ClientTransceiver {
                     shutdownClient();
                 }
             }
-        }).start();
-    }
-
-    public void receiveMessage() {
-        new Thread(() -> {
-                String msgFromSvr;
-                while (clientSocket.isConnected()) {
-                    try {
-                        msgFromSvr = bufferedReader.readLine();
-                        System.out.println(msgFromSvr);
-                    } catch (IOException e) {
-                        shutdownClient();
-                    }
-                }
         }).start();
     }
 
