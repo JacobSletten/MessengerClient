@@ -124,7 +124,7 @@ public class ClientLoginController implements Initializable {
 
         try {
             System.out.println("Building Controller");
-            Socket socket = new Socket("192.168.38.175", 1234);
+            Socket socket = new Socket("localhost", 1234);
             clientTransceiver = new ClientTransceiver(socket);
         } catch (IOException e) {
             e.printStackTrace();
