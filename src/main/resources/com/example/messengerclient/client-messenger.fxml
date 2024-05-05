@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Text?>
 
 
-<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.messengerclient.ClientUIController">
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.messengerclient.ClientUIController">
    <children>
       <HBox fx:id="top_bar" alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="320.0" style="-fx-background-color: #202A44;">
          <children>

@@ -33,6 +33,7 @@ public class ClientTransceiver {
     }
 
     public void shutdownClient(){
+        sendShutdownSignal();
         try {
             if (clientSocket != null) {
                 clientSocket.close();
@@ -45,6 +46,16 @@ public class ClientTransceiver {
             }
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void sendShutdownSignal() {
+        try {
+            bufferedWriter.write(String.valueOf(EventFlag.SHUTDOWN.ordinal()));
+            bufferedWriter.newLine();
+            bufferedWriter.flush();
+        } catch (IOException e) {
+            shutdownClient();
         }
     }
 
@@ -84,7 +95,7 @@ public class ClientTransceiver {
     public void receiveMessageWithHook(ExtractionFunction func) {
         new Thread(() -> {
             String msgFromSvr;
-            while (clientSocket.isConnected()) {
+            while (!clientSocket.isClosed()) {
                 try {
                     msgFromSvr = bufferedReader.readLine();
                     func.getData(msgFromSvr);

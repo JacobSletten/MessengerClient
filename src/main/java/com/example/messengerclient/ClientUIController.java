@@ -71,11 +71,14 @@ public class ClientUIController implements Initializable {
     @FXML
     public void maximizeApp(MouseEvent event) {
         Stage s = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        s.setFullScreen(true);
+        s.setMaximized(!s.isMaximized());
     }
     @FXML
     public void closeApp(MouseEvent event) {
         Stage s = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        if (clientTransceiver != null) {
+            clientTransceiver.shutdownClient();
+        }
         s.close();
         System.exit(0);
     }

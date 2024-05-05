@@ -95,7 +95,7 @@ public class ClientLoginController implements Initializable {
     @FXML
     public void maximizeApp(MouseEvent event) {
         Stage s = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        s.setFullScreen(true);
+        s.setMaximized(!s.isMaximized());
     }
     @FXML
     public void closeApp(MouseEvent event) {
@@ -104,6 +104,7 @@ public class ClientLoginController implements Initializable {
             clientTransceiver.shutdownClient();
         }
         s.close();
+        System.exit(0);
     }
 
     private void displayInvalidAlert(String status) {
