@@ -13,8 +13,6 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -25,15 +23,13 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
-
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ClientUIController implements Initializable {
     private final ObservableList<String> messages = FXCollections.observableArrayList();
     private ClientTransceiver clientTransceiver;
-    private ExtractionFunction getData = (s) -> messages.add(s);
+    private final ExtractionFunction getData = messages::add;
     private double x = 0, y = 0;
 
     @FXML
@@ -68,17 +64,17 @@ public class ClientUIController implements Initializable {
         }
     }
     @FXML
-    public void minimizeApp(MouseEvent event) throws IOException {
+    public void minimizeApp(MouseEvent event) {
         Stage s = (Stage) ((Node)event.getSource()).getScene().getWindow();
         s.setIconified(true);
     }
     @FXML
-    public void maximizeApp(MouseEvent event) throws IOException {
+    public void maximizeApp(MouseEvent event) {
         Stage s = (Stage) ((Node)event.getSource()).getScene().getWindow();
         s.setFullScreen(true);
     }
     @FXML
-    public void closeApp(MouseEvent event) throws IOException {
+    public void closeApp(MouseEvent event) {
         Stage s = (Stage) ((Node)event.getSource()).getScene().getWindow();
         s.close();
         System.exit(0);

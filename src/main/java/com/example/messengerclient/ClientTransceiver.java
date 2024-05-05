@@ -18,7 +18,6 @@ public class ClientTransceiver {
      *
      * @param socket the client's socket
      */
-
     public ClientTransceiver(Socket socket) {
         try {
             this.clientSocket = socket;
@@ -60,23 +59,26 @@ public class ClientTransceiver {
     }
 
     public void sendLoginCredentials(String user, String pass) throws IOException {
-        sendCredentials(user, pass, "Login");
+        sendCredentials(user, pass, EventFlag.LOGIN.ordinal());
     }
 
     public void sendNewAccountCredentials(String user, String pass) throws IOException {
-        sendCredentials(user, pass, "Create");
+        sendCredentials(user, pass, EventFlag.CREATE_ACCOUNT.ordinal());
     }
 
-    public String waitForResponse() {
-        String msgFromSvr = "Invalid";
+    public EventFlag waitForStatus() {
+        String msgFromSvr;
+        EventFlag status;
         try {
             System.out.println("Waiting for response...");
             msgFromSvr = bufferedReader.readLine();
             System.out.println("Response from Server: " + msgFromSvr);
+            status = EventFlag.values()[parseStringToOrdinal(msgFromSvr)];
+            return status;
         } catch (IOException e) {
             shutdownClient();
+            return EventFlag.INVALID;
         }
-        return msgFromSvr;
     }
 
     public void receiveMessageWithHook(ExtractionFunction func) {
@@ -93,14 +95,22 @@ public class ClientTransceiver {
         }).start();
     }
 
-    private void sendCredentials(String user, String pass, String header) throws IOException {
+    private void sendCredentials(String user, String pass, int header) throws IOException {
         clientUsername = user;
-        bufferedWriter.write(header);
+        bufferedWriter.write(String.valueOf(header));
         bufferedWriter.newLine();
         bufferedWriter.write(user);
         bufferedWriter.newLine();
         bufferedWriter.write(pass);
         bufferedWriter.newLine();
         bufferedWriter.flush();
+    }
+
+    public static int parseStringToOrdinal(String stringToParse) {
+        try {
+            return Integer.parseInt(stringToParse);
+        } catch(NumberFormatException e) {
+            return 0; // 0 == INVALID
+        }
     }
 }
